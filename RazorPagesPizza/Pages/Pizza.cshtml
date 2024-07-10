@@ -22,7 +22,7 @@
         <input asp-for="NewPizza.Price" class="mr-5" />
         <label asp-for="NewPizza.IsGlutenFree">Gluten Free</label>
         <input type="checkbox" asp-for="NewPizza.IsGlutenFree" class="mr-5">
-        <button id="updateButton" class="btn btn-primary">Add</button>
+        <button type="button" id="updateButton" class="btn btn-primary">Add</button>
     </div>
 </form>
 
@@ -34,20 +34,35 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        document.getElementById("updateButton").addEventListener("click", function () {
-            fetch("/Pizza.cshtml.cs?handler=UpadtePartial")
+        document.getElementById("updateButton").addEventListener("click", function (event) {
+            event.preventDefault(); // Evita la recarga de la página
+
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+
+            fetch('/Pizza', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return fetch('/Pizza?handler=UpdatePartial');
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
                 .then(response => {
                     if (response.ok) {
                         return response.text();
                     } else {
-                        throw new Error("Network response was noy ok.");
+                        throw new Error('Network response was not ok.');
                     }
                 })
                 .then(html => {
-                    document.getElementById("partialContainer").innerHTML = html;
+                    document.getElementById('partialContainer').innerHTML = html;
                 })
                 .catch(error => {
-                    console.error("There was a problem with the fetch operation.", error);
+                    console.error('There was a problem with the fetch operation.', error);
                 });
         });
     </script>

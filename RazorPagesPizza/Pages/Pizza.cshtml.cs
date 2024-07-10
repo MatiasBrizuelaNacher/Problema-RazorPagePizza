@@ -18,9 +18,8 @@ namespace RazorPagesPizza.Pages
         }
 
         //XHR
-        public PartialViewResult OnGetUpadtePartial()
+        public PartialViewResult OnGetUpdatePartial()
         {
-            Task.Delay(5000);
             pizzas = PizzaService.GetAll();
             return new PartialViewResult
             {
