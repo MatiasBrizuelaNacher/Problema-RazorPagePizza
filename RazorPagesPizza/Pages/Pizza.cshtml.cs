@@ -17,6 +17,18 @@ namespace RazorPagesPizza.Pages
             pizzas = PizzaService.GetAll();
         }
 
+        //XHR
+        public PartialViewResult OnGetUpadtePartial()
+        {
+            Task.Delay(5000);
+            pizzas = PizzaService.GetAll();
+            return new PartialViewResult
+            {
+                ViewName = "_TablaDeLosPedidos",
+                ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<List<Pizza>>(ViewData, pizzas)
+            };
+        }
+
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
